@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Applicant Dashboard — Northstar AI</title>
+<style>
+:root{
+  --bg:#0b1020;
+  --panel:rgba(255,255,255,.075);
+  --line:rgba(255,255,255,.14);
+  --text:#eef2ff;
+  --muted:#a7b0ca;
+  --accent:#9b8cff;
+  --accent2:#67e8d2;
+  --danger:#fb7185;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:radial-gradient(ellipse at 10% 0%,#25265a 0,transparent 38%),radial-gradient(ellipse at 100% 20%,#123c4c 0,transparent 30%),var(--bg);
+  color:var(--text);
+  font:15px/1.6 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;
+  min-height:100vh;
+}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1200px;margin:auto;padding:0 24px}
+.nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 0;border-bottom:1px solid var(--line);
+}
+.brand{display:flex;gap:11px;align-items:center;font-weight:750;letter-spacing:.2px}
+.logo{
+  display:grid;place-items:center;width:38px;height:38px;border-radius:12px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));color:#10152b;font-weight:900;
+}
+.pill{
+  display:inline-flex;align-items:center;gap:6px;
+  border:1px solid var(--line);border-radius:99px;padding:6px 14px;
+  color:#d9d5ff;background:rgba(155,140,255,.09);font-size:13px;
+}
+.pill-accent{
+  border-color:rgba(103,232,210,.3);color:var(--accent2);background:rgba(103,232,210,.09);
+}
+.btn{
+  display:inline-flex;justify-content:center;align-items:center;gap:8px;
+  text-decoration:none;border:0;border-radius:10px;padding:9px 15px;
+  background:linear-gradient(120deg,var(--accent),#76dccc);color:#10152b;
+  font-weight:700;cursor:pointer;font-size:13px;transition:opacity .15s ease;
+}
+.btn:hover{opacity:.9}
+.btn-outline{
+  background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--text);
+}
+.btn-outline:hover{background:rgba(255,255,255,.1)}
+.btn-danger{
+  background:rgba(251,113,133,.15);border:1px solid rgba(251,113,133,.3);color:var(--danger);
+}
+.btn-danger:hover{background:rgba(251,113,133,.25)}
+.header-section{
+  padding:36px 0 24px;
+  display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;
+}
+.title-area h1{
+  font-size:32px;line-height:1.2;margin:0 0 6px;letter-spacing:-1px;
+}
+.title-area p{margin:0;color:var(--muted);font-size:15px}
+.stats-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:28px;
+}
+.stat-card{
+  background:var(--panel);border:1px solid var(--line);border-radius:16px;
+  padding:18px 22px;backdrop-filter:blur(16px);
+}
+.stat-num{font-size:30px;font-weight:800;color:#fff;margin:2px 0}
+.stat-lbl{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+
+.controls{
+  display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;align-items:center;justify-content:space-between;
+}
+.search-box{
+  flex:1;min-width:280px;position:relative;
+}
+.search-box input{
+  width:100%;font:inherit;color:var(--text);background:rgba(6,10,24,.7);
+  border:1px solid var(--line);border-radius:10px;padding:10px 14px 10px 36px;outline:none;
+}
+.search-box input:focus{border-color:var(--accent)}
+.search-box svg{
+  position:absolute;left:12px;top:50%;transform:translateY(-50%);
+  width:16px;height:16px;color:var(--muted);
+}
+.filter-select{
+  font:inherit;color:var(--text);background:rgba(6,10,24,.7);
+  border:1px solid var(--line);border-radius:10px;padding:10px 14px;outline:none;cursor:pointer;
+}
+.filter-select option{background:#10152b}
+
+.panel{
+  background:var(--panel);border:1px solid var(--line);border-radius:18px;
+  backdrop-filter:blur(18px);box-shadow:0 20px 70px #0003;overflow:hidden;
+}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;text-align:left}
+th{
+  padding:14px 18px;font-size:12px;text-transform:uppercase;letter-spacing:1px;
+  color:var(--muted);border-bottom:1px solid var(--line);background:rgba(255,255,255,.02);
+}
+td{
+  padding:16px 18px;border-bottom:1px solid var(--line);font-size:14px;vertical-align:middle;
+}
+tr:last-child td{border-bottom:0}
+tr:hover td{background:rgba(255,255,255,.03)}
+
+.applicant-name{font-weight:700;color:#fff;font-size:15px;display:flex;align-items:center;gap:8px}
+.applicant-email{color:var(--muted);font-size:13px}
+.badge{
+  display:inline-block;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;
+  border:1px solid var(--line);background:rgba(255,255,255,.05);
+}
+.badge-ref{color:var(--accent2);border-color:rgba(103,232,210,.3);background:rgba(103,232,210,.08);font-family:monospace}
+.badge-exp{color:#facc15;border-color:rgba(250,204,21,.3);background:rgba(250,204,21,.08)}
+.skill-tag{
+  display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;
+  background:rgba(155,140,255,.1);color:#d9d5ff;margin:2px;border:1px solid rgba(155,140,255,.2);
+}
+
+.empty-state{
+  text-align:center;padding:60px 20px;color:var(--muted);
+}
+.empty-state svg{width:56px;height:56px;stroke-width:1.5;color:var(--muted);margin-bottom:16px}
+.empty-state h3{color:#fff;margin:0 0 8px;font-size:20px}
+
+/* Modal */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(5,8,18,.8);backdrop-filter:blur(6px);
+  display:flex;align-items:center;justify-content:center;padding:20px;z-index:999;
+  opacity:0;pointer-events:none;transition:opacity .2s ease;
+}
+.modal-overlay.open{opacity:1;pointer-events:auto}
+.modal-card{
+  background:#10152b;border:1px solid var(--line);border-radius:20px;
+  width:100%;max-width:680px;max-height:90vh;overflow-y:auto;padding:28px;
+  box-shadow:0 30px 90px rgba(0,0,0,.6);transform:translateY(15px);transition:transform .2s ease;
+}
+.modal-overlay.open .modal-card{transform:translateY(0)}
+.modal-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px}
+.modal-close{
+  background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer;padding:0;line-height:1;
+}
+.modal-close:hover{color:#fff}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.detail-item{background:rgba(255,255,255,.03);padding:10px 14px;border-radius:10px;border:1px solid var(--line)}
+.detail-label{font-size:11px;color:var(--muted);text-transform:uppercase;margin-bottom:3px}
+.detail-val{font-size:14px;color:#fff;word-break:break-word}
+.cover-box{
+  background:rgba(6,10,24,.6);border:1px solid var(--line);border-radius:10px;
+  padding:14px;font-size:13.5px;color:#cbd5e1;white-space:pre-wrap;max-height:180px;overflow-y:auto;
+}
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <nav class="nav">
+    <div class="brand">
+      <span class="logo">N</span>
+      <span>northstar<span style="color:var(--accent2)">.ai</span> <span class="muted" style="font-weight:500">Applicant Portal</span></span>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center;">
+      <a href="/" class="btn btn-outline">← Back to Job Post</a>
+      <button onclick="loadApplicants()" class="btn">🔄 Refresh</button>
+    </div>
+  </nav>
+</header>
+
+<main class="wrap" style="padding-bottom:60px;">
+  <section class="header-section">
+    <div class="title-area">
+      <span class="pill pill-accent">Internal ATS Dashboard</span>
+      <h1>Job Applicants</h1>
+      <p>Real-time view of candidates who submitted applications for <strong>AI/ML Engineer</strong>.</p>
+    </div>
+    <div>
+      <span id="storageBadge" class="pill">📁 Database: SQLite (applicants.db)</span>
+    </div>
+  </section>
+
+  <!-- Metric stats -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-lbl">Total Applicants</div>
+      <div class="stat-num" id="totalCount">0</div>
+      <div style="font-size:12px;color:var(--muted)">Stored in local database</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-lbl">Fresher / &lt;1 yr</div>
+      <div class="stat-num" id="fresherCount" style="color:var(--accent2)">0</div>
+      <div style="font-size:12px;color:var(--muted)">Early career candidates</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-lbl">Experienced (1+ yrs)</div>
+      <div class="stat-num" id="expCount" style="color:var(--accent)">0</div>
+      <div style="font-size:12px;color:var(--muted)">Mid to senior candidates</div>
+    </div>
+  </div>
+
+  <!-- Search and filter -->
+  <div class="controls">
+    <div class="search-box">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      <input type="text" id="searchInput" placeholder="Search by name, email, skills, location, or reference ID..." oninput="filterApplicants()">
+    </div>
+    <select id="expFilter" class="filter-select" onchange="filterApplicants()">
+      <option value="">All Experience Levels</option>
+      <option value="Fresher">Fresher</option>
+      <option value="Less than 1 year">Less than 1 year</option>
+      <option value="1–3 years">1–3 years</option>
+      <option value="3+ years">3+ years</option>
+    </select>
+  </div>
+
+  <!-- Applicants Table -->
+  <div class="panel">
+    <div class="table-wrap">
+      <table id="applicantsTable">
+        <thead>
+          <tr>
+            <th>Ref & Date</th>
+            <th>Candidate</th>
+            <th>Experience / Degree</th>
+            <th>Skills</th>
+            <th>Resume</th>
+            <th style="text-align:right">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <!-- Populated by JavaScript -->
+        </tbody>
+      </table>
+    </div>
+    <div id="emptyState" class="empty-state" style="display:none">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>
+      <h3>No applicants found</h3>
+      <p id="emptyMsg">No applications have been submitted yet.</p>
+      <a href="/#apply" class="btn" style="margin-top:14px">Submit a Test Application →</a>
+    </div>
+  </div>
+</main>
+
+<!-- Detail Modal -->
+<div class="modal-overlay" id="detailModal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div>
+        <span class="badge badge-ref" id="mRef"></span>
+        <h2 id="mName" style="margin:6px 0 2px;font-size:22px"></h2>
+        <div class="muted" id="mDate" style="font-size:12px"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+    </div>
+
+    <div class="detail-grid">
+      <div class="detail-item"><div class="detail-label">Email</div><div class="detail-val" id="mEmail"></div></div>
+      <div class="detail-item"><div class="detail-label">Phone</div><div class="detail-val" id="mPhone"></div></div>
+      <div class="detail-item"><div class="detail-label">Location</div><div class="detail-val" id="mLocation"></div></div>
+      <div class="detail-item"><div class="detail-label">Experience</div><div class="detail-val" id="mExp"></div></div>
+      <div class="detail-item"><div class="detail-label">Education</div><div class="detail-val" id="mEdu"></div></div>
+      <div class="detail-item"><div class="detail-label">Graduation Year</div><div class="detail-val" id="mGrad"></div></div>
+      <div class="detail-item" style="grid-column:1/-1"><div class="detail-label">LinkedIn</div><div class="detail-val" id="mLinkedin"></div></div>
+    </div>
+
+    <div style="margin-bottom:18px">
+      <div class="detail-label" style="margin-bottom:6px">Skills</div>
+      <div id="mSkills"></div>
+    </div>
+
+    <div style="margin-bottom:20px" id="coverContainer">
+      <div class="detail-label" style="margin-bottom:6px">Cover Letter</div>
+      <div class="cover-box" id="mCover"></div>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid var(--line)">
+      <a id="mResumeBtn" class="btn" target="_blank" href="#">📄 Download / View Resume</a>
+      <button onclick="closeModal()" class="btn btn-outline">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let allApplicants = [];
+
+async function loadApplicants(){
+  try{
+    const res = await fetch('/api/applicants');
+    if(!res.ok) throw new Error('Failed to load applicants');
+    const data = await res.json();
+    allApplicants = data.applicants || [];
+    updateMetrics(allApplicants);
+    filterApplicants();
+  }catch(err){
+    console.error(err);
+    document.getElementById('tableBody').innerHTML = `<tr><td colspan="6" style="text-align:center;padding:30px;color:var(--danger)">Failed to load applicants: ${err.message}</td></tr>`;
+  }
+}
+
+function updateMetrics(list){
+  document.getElementById('totalCount').textContent = list.length;
+  const fresher = list.filter(a => a.experience === 'Fresher' || a.experience === 'Less than 1 year').length;
+  const exp = list.filter(a => a.experience === '1–3 years' || a.experience === '3+ years').length;
+  document.getElementById('fresherCount').textContent = fresher;
+  document.getElementById('expCount').textContent = exp;
+}
+
+function filterApplicants(){
+  const query = document.getElementById('searchInput').value.toLowerCase().trim();
+  const expFilter = document.getElementById('expFilter').value;
+
+  const filtered = allApplicants.filter(a => {
+    const matchesQuery = !query || 
+      a.name.toLowerCase().includes(query) ||
+      a.email.toLowerCase().includes(query) ||
+      (a.phone && a.phone.includes(query)) ||
+      (a.location && a.location.toLowerCase().includes(query)) ||
+      (a.skills && a.skills.toLowerCase().includes(query)) ||
+      a.reference_id.toLowerCase().includes(query);
+
+    const matchesExp = !expFilter || a.experience === expFilter;
+
+    return matchesQuery && matchesExp;
+  });
+
+  renderTable(filtered);
+}
+
+function renderTable(list){
+  const tbody = document.getElementById('tableBody');
+  const emptyState = document.getElementById('emptyState');
+  const table = document.getElementById('applicantsTable');
+
+  if(list.length === 0){
+    tbody.innerHTML = '';
+    table.style.display = 'none';
+    emptyState.style.display = 'block';
+    document.getElementById('emptyMsg').textContent = allApplicants.length === 0 
+      ? 'No candidates have submitted an application yet.' 
+      : 'No applicants match your search filter.';
+    return;
+  }
+
+  table.style.display = 'table';
+  emptyState.style.display = 'none';
+
+  tbody.innerHTML = list.map(a => {
+    const skillsList = a.skills.split(',').map(s => s.trim()).filter(Boolean);
+    const displayedSkills = skillsList.slice(0, 3).map(s => `<span class="skill-tag">${escapeHtml(s)}</span>`).join('');
+    const extraSkills = skillsList.length > 3 ? `<span class="skill-tag" style="background:rgba(255,255,255,.05);color:var(--muted)">+${skillsList.length - 3}</span>` : '';
+
+    return `
+      <tr>
+        <td>
+          <span class="badge badge-ref">${escapeHtml(a.reference_id)}</span>
+          <div style="font-size:12px;color:var(--muted);margin-top:4px">${escapeHtml(a.applied_at)}</div>
+        </td>
+        <td>
+          <div class="applicant-name">
+            ${escapeHtml(a.name)}
+            ${a.linkedin ? `<a href="${escapeHtml(a.linkedin)}" target="_blank" title="LinkedIn" style="color:#67e8d2;font-size:12px">↗</a>` : ''}
+          </div>
+          <div class="applicant-email">
+            <a href="mailto:${escapeHtml(a.email)}" style="color:var(--muted)">${escapeHtml(a.email)}</a>
+            · <span>${escapeHtml(a.phone)}</span>
+          </div>
+          <div style="font-size:12px;color:var(--muted)">${escapeHtml(a.location)}</div>
+        </td>
+        <td>
+          <span class="badge badge-exp">${escapeHtml(a.experience)}</span>
+          <div style="font-size:12.5px;color:#cbd5e1;margin-top:4px">${escapeHtml(a.education)} ${a.gradyear ? '(' + escapeHtml(a.gradyear) + ')' : ''}</div>
+        </td>
+        <td style="max-width:220px">
+          <div>${displayedSkills}${extraSkills}</div>
+        </td>
+        <td>
+          <a class="btn btn-outline" style="padding:6px 11px;font-size:12px" href="/uploads/${encodeURIComponent(a.resume_filename)}" target="_blank" download="${escapeHtml(a.resume_original_name || 'resume.pdf')}">
+            📥 ${escapeHtml(a.resume_original_name || 'Resume')}
+          </a>
+        </td>
+        <td style="text-align:right">
+          <div style="display:inline-flex;gap:6px">
+            <button class="btn btn-outline" style="padding:6px 10px;font-size:12px" onclick="openModal(${a.id})">Details</button>
+            <button class="btn btn-danger" style="padding:6px 10px;font-size:12px" onclick="deleteApplicant(${a.id})">Delete</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function openModal(id){
+  const a = allApplicants.find(item => item.id === id);
+  if(!a) return;
+
+  document.getElementById('mRef').textContent = a.reference_id;
+  document.getElementById('mName').textContent = a.name;
+  document.getElementById('mDate').textContent = 'Applied on ' + a.applied_at;
+  document.getElementById('mEmail').innerHTML = `<a href="mailto:${escapeHtml(a.email)}" style="color:var(--accent2)">${escapeHtml(a.email)}</a>`;
+  document.getElementById('mPhone').innerHTML = `<a href="tel:${escapeHtml(a.phone)}" style="color:var(--accent2)">${escapeHtml(a.phone)}</a>`;
+  document.getElementById('mLocation').textContent = a.location || '—';
+  document.getElementById('mExp').textContent = a.experience || '—';
+  document.getElementById('mEdu').textContent = a.education || '—';
+  document.getElementById('mGrad').textContent = a.gradyear || '—';
+  document.getElementById('mLinkedin').innerHTML = a.linkedin ? `<a href="${escapeHtml(a.linkedin)}" target="_blank" style="color:var(--accent2);text-decoration:underline">${escapeHtml(a.linkedin)}</a>` : '—';
+  
+  const skillsList = a.skills.split(',').map(s => s.trim()).filter(Boolean);
+  document.getElementById('mSkills').innerHTML = skillsList.map(s => `<span class="skill-tag" style="font-size:12px;padding:3px 9px;">${escapeHtml(s)}</span>`).join(' ') || '—';
+
+  const coverCont = document.getElementById('coverContainer');
+  if(a.cover && a.cover.trim()){
+    coverCont.style.display = 'block';
+    document.getElementById('mCover').textContent = a.cover;
+  } else {
+    coverCont.style.display = 'none';
+  }
+
+  const resumeBtn = document.getElementById('mResumeBtn');
+  resumeBtn.href = `/uploads/${encodeURIComponent(a.resume_filename)}`;
+  resumeBtn.setAttribute('download', a.resume_original_name || 'resume.pdf');
+
+  document.getElementById('detailModal').classList.add('open');
+}
+
+function closeModal(){
+  document.getElementById('detailModal').classList.remove('open');
+}
+
+async function deleteApplicant(id){
+  if(!confirm('Are you sure you want to delete this applicant and their resume?')) return;
+
+  try{
+    const res = await fetch(`/api/applicants/${id}`, { method: 'DELETE' });
+    if(!res.ok) throw new Error('Failed to delete');
+    allApplicants = allApplicants.filter(a => a.id !== id);
+    updateMetrics(allApplicants);
+    filterApplicants();
+  }catch(err){
+    alert('Error deleting applicant: ' + err.message);
+  }
+}
+
+function escapeHtml(str){
+  if(!str) return '';
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+window.addEventListener('keydown', e => {
+  if(e.key === 'Escape') closeModal();
+});
+
+// Load on start
+loadApplicants();
+</script>
+</body>
+</html>

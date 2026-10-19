@@ -1,0 +1,22 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Database files
+*.db
+*.sqlite3
+
+# Uploaded applicant resume files
+uploads/*
+!uploads/.gitkeep
+aiml_engineer_job_demo/uploads/*
+!aiml_engineer_job_demo/uploads/.gitkeep
+
+# Virtual environments & IDE
+.env
+.venv
+env/
+venv/
+.vscode/
+.idea/
