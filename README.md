@@ -1,33 +1,43 @@
 # Job
 
-AI/ML Engineer Job Portal & Applicant Tracking System (ATS).
+**AI/ML Engineer Job Portal & Client-Side Applicant Tracking System (ATS)**
 
-A standalone, responsive demo job posting and application platform with SQLite database storage, resume file uploads, and an internal ATS dashboard.
+A 100% frontend, zero-backend static web application. No Python, Node.js, server, or database installation required. Everything runs entirely within the web browser using modern Web APIs (`IndexedDB` and `localStorage`).
 
-## Features
-- **Job Posting & Application Form**: Candidates can view role requirements and submit applications with resumes (`.pdf`, `.doc`, `.docx`).
-- **Applicant Storage**: Secure SQLite database storage for applicant submissions (`applicants.db`).
-- **Resume File Uploads**: Uploaded resumes saved safely into the `uploads/` directory.
-- **Applicant Dashboard (`/admin`)**:
-  - Live metric counters (Total, Freshers, Experienced).
-  - Search & filter by keyword, skills, or experience level.
-  - Candidate profile modal with full details and cover letters.
-  - One-click resume download/view.
-  - Candidate deletion option.
+---
 
-## Quick Start
+## Highlights
+- **Zero Backend / Serverless**: Open directly in any browser (`index.html`) or deploy with 1-click to **GitHub Pages**, Netlify, or Vercel.
+- **Client-Side Applicant Storage**: Candidate submissions are stored locally in the browser's persistent `IndexedDB` database.
+- **Resume File Handling**: Resumes (`.pdf`, `.doc`, `.docx`) are converted to browser data blobs, stored offline, and can be downloaded anytime.
+- **Full Applicant Dashboard (`admin.html`)**:
+  - Real-time search across candidate names, skills, email, location, and reference IDs.
+  - Filter by experience level (Fresher, 1–3 years, 3+ years).
+  - One-click native resume download.
+  - Candidate details modal with full cover letter and profile info.
+  - Export all applicants to **CSV** (for Excel / Google Sheets) or **JSON**.
+  - One-click sample test data loader and record management (delete / clear all).
 
-### 1. Install Dependencies
-```bash
-pip install -r requirements.txt
+---
+
+## How to Run
+
+### Option 1: Direct File Open
+Simply double-click [`index.html`](index.html) or run [`start.bat`](start.bat) to launch the website in your default browser.
+
+### Option 2: GitHub Pages (Live Hosting)
+1. In your GitHub repository settings, go to **Pages**.
+2. Select `main` branch and `/ (root)` folder.
+3. Click **Save**. Your site will be live instantly on `https://<username>.github.io/<repo>/`!
+
+---
+
+## File Structure
+```text
+├── index.html        # Job posting and application form
+├── admin.html        # ATS Applicant tracking dashboard
+├── storage.js        # Client-side IndexedDB storage engine
+├── start.bat         # Windows shortcut to open website
+├── README.md         # Documentation
+└── .gitignore        # Git ignore rules
 ```
-
-### 2. Run the Application
-```bash
-python aiml_engineer_job_demo/server.py
-```
-Or double-click `start.bat` on Windows.
-
-### 3. Open in Browser
-- **Job Post & Application Form**: [http://localhost:8080](http://localhost:8080)
-- **Applicant Dashboard**: [http://localhost:8080/admin](http://localhost:8080/admin)

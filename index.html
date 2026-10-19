@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI/ML Engineer — Careers | Northstar AI</title>
+<style>
+:root{--bg:#0b1020;--panel:rgba(255,255,255,.075);--line:rgba(255,255,255,.14);--text:#eef2ff;--muted:#a7b0ca;--accent:#9b8cff;--accent2:#67e8d2;--danger:#fb7185}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 10% 0%,#25265a 0,transparent 38%),radial-gradient(ellipse at 100% 20%,#123c4c 0,transparent 30%),var(--bg);color:var(--text);font:15px/1.6 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+a{color:inherit}.wrap{max-width:1120px;margin:auto;padding:0 24px}.nav{display:flex;align-items:center;justify-content:space-between;padding:22px 0;border-bottom:1px solid var(--line)}.brand{display:flex;gap:11px;align-items:center;font-weight:750;letter-spacing:.2px}.logo{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#10152b;font-weight:900}.nav a{color:var(--muted);text-decoration:none}.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:99px;padding:6px 13px;color:#d9d5ff;background:rgba(155,140,255,.09);font-size:12.5px}.hero{padding:54px 0 32px}.eyebrow{color:var(--accent2);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1.8px}.hero h1{font-size:clamp(36px,5vw,56px);line-height:1.08;letter-spacing:-1.8px;max-width:760px;margin:14px 0}.hero p{max-width:720px;color:var(--muted);font-size:17px}.meta{display:flex;flex-wrap:wrap;gap:10px;margin:24px 0}.meta span{padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.035);color:#e2e8f8}.layout{display:grid;grid-template-columns:1fr 370px;gap:22px;align-items:start;padding-bottom:60px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:20px;backdrop-filter:blur(18px);box-shadow:0 20px 70px #0002}.content{padding:28px}.content h2{font-size:20px;margin:0 0 12px}.content h3{font-size:15px;margin:25px 0 8px}.content p,.content li{color:#c4cce0}.content ul{padding-left:21px}.side{padding:23px;position:sticky;top:20px}.side h2{margin:0 0 6px;font-size:20px}.muted{color:var(--muted)}.btn{display:inline-flex;justify-content:center;align-items:center;gap:8px;text-decoration:none;border:0;border-radius:11px;padding:12px 17px;background:linear-gradient(120deg,var(--accent),#76dccc);color:#10152b;font-weight:800;cursor:pointer}.btn.full{width:100%;margin-top:14px}.side-row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}.side-row span:first-child{color:var(--muted)}.notice{font-size:12px;color:var(--muted);margin-top:16px}.apply{padding:30px;margin:0 0 60px}.apply-head{display:flex;justify-content:space-between;gap:16px;align-items:start;margin-bottom:22px}.apply h2{font-size:26px;margin:0}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}label{font-size:13px;color:#dbe2f5;font-weight:650}input,select,textarea{width:100%;font:inherit;color:var(--text);background:rgba(6,10,24,.6);border:1px solid var(--line);border-radius:10px;padding:12px;outline:none}input:focus,select:focus,textarea:focus{border-color:var(--accent)}select option{background:#10152b}textarea{min-height:105px;resize:vertical}.help{font-size:12px;color:var(--muted)}.check{display:flex;align-items:flex-start;gap:10px;color:#c4cce0;font-size:13px}.check input{width:auto;margin-top:5px}.status{display:none;padding:16px;border-radius:12px;margin-top:16px;line-height:1.5}.status.ok{display:block;border:1px solid #4fd1ad55;background:#2dd4bf13;color:#a7f3d0}.status.err{display:block;border:1px solid #fb718555;background:#fb718511;color:#fecaca}.footer{border-top:1px solid var(--line);padding:25px 0;color:var(--muted);font-size:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:gap}.tagrow{display:flex;flex-wrap:wrap;gap:8px}.tag{border:1px solid var(--line);border-radius:8px;padding:5px 9px;color:#d7def2;font-size:12px}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.side{position:static}.hero{padding-top:40px}}@media(max-width:580px){.wrap{padding:0 15px}.content,.apply{padding:20px}.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}.apply-head{display:block}.hero h1{letter-spacing:-1px}}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <nav class="nav">
+    <div class="brand">
+      <span class="logo">N</span>
+      <span>northstar<span style="color:var(--accent2)">.ai</span> <span class="muted" style="font-weight:500">Careers</span></span>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center;">
+      <a href="admin.html" class="pill" style="border-color:rgba(103,232,210,.5);color:var(--accent2);text-decoration:none;font-weight:700">
+        👥 View Applicants <span id="navApplicantCount" style="background:var(--accent2);color:#0b1020;border-radius:99px;padding:1px 7px;font-size:11px;font-weight:800;display:none">0</span>
+      </a>
+      <a href="#role" style="text-decoration:none">Open role&nbsp; ↗</a>
+    </div>
+  </nav>
+</header>
+<main class="wrap">
+<section class="hero" id="role">
+  <div class="eyebrow">Careers · Engineering</div>
+  <h1>Build what intelligence can become.</h1>
+  <p>We're looking for an AI/ML Engineer to help design, train, evaluate, and deploy machine-learning systems that solve practical problems.</p>
+  <div class="meta"><span>✦ AI/ML Engineer</span><span>⌖ Bengaluru, India · Hybrid</span><span>◷ Full-time</span><span>₹8–14 LPA · illustrative</span></div>
+  <span class="pill" style="border-color:rgba(103,232,210,.3);color:var(--accent2)">⚡ 100% Client-Side Ready · No Backend Required</span>
+</section>
+<div class="layout">
+  <article class="panel content">
+    <h2>About the role</h2>
+    <p>As an AI/ML Engineer at Northstar AI, you'll collaborate with product and engineering teams to turn data and research into dependable machine-learning features. You'll work across experimentation, model evaluation, API integration, and production monitoring.</p>
+    <h3>What you'll do</h3>
+    <ul><li>Prepare datasets, build data pipelines, and perform exploratory data analysis.</li><li>Train, evaluate, and improve machine-learning and deep-learning models.</li><li>Develop reproducible experiments and measure model quality using suitable metrics.</li><li>Build inference APIs and integrate models into application workflows.</li><li>Collaborate with software engineers, product managers, and domain experts.</li><li>Document experiments, monitor model performance, and help address data or model drift.</li></ul>
+    <h3>Required qualifications</h3>
+    <ul><li>Bachelor's or Master's degree in Computer Science, AI/ML, Data Science, Statistics, or a related field; equivalent project experience is welcome.</li><li>Working knowledge of Python, SQL, data structures, and software development fundamentals.</li><li>Experience with NumPy, Pandas, scikit-learn, and at least one of PyTorch or TensorFlow.</li><li>Understanding of supervised learning, model validation, overfitting, and evaluation metrics.</li><li>Ability to explain technical decisions and collaborate effectively.</li></ul>
+    <h3>Nice to have</h3><div class="tagrow"><span class="tag">NLP / Transformers</span><span class="tag">LLMs / RAG</span><span class="tag">Docker</span><span class="tag">FastAPI</span><span class="tag">Cloud deployment</span><span class="tag">MLOps</span><span class="tag">Git</span></div>
+    <h3>What we offer</h3><ul><li>Mentorship and opportunities to learn from applied ML projects.</li><li>Collaborative engineering environment and flexible hybrid work.</li><li>Learning budget and time for technical development.</li></ul>
+    <h3>Hiring process</h3><p>Illustrative process: application review → technical conversation → practical ML discussion → team interview. Candidates can submit their application below and review applicants directly in the dashboard.</p>
+  </article>
+  <aside class="panel side">
+    <h2>AI/ML Engineer</h2><div class="muted">Northstar AI Careers</div>
+    <a class="btn full" href="#apply">Apply for this role</a>
+    <div class="side-row"><span>Employment</span><strong>Full-time</strong></div>
+    <div class="side-row"><span>Workplace</span><strong>Hybrid</strong></div>
+    <div class="side-row"><span>Location</span><strong>Bengaluru, India</strong></div>
+    <div class="side-row"><span>Experience</span><strong>0–3 years</strong></div>
+    <div class="side-row"><span>Salary range</span><strong>₹8–14 LPA</strong></div>
+    <div class="side-row"><span>Job ID</span><strong>NSAI-ML-001</strong></div>
+    <div style="margin-top:18px">
+      <a href="admin.html" class="btn full" style="background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--text);font-weight:600">
+        📊 Open Applicant Dashboard
+      </a>
+    </div>
+  </aside>
+</div>
+
+<section class="panel apply" id="apply">
+  <div class="apply-head">
+    <div>
+      <div class="eyebrow">Application form</div>
+      <h2>Apply for AI/ML Engineer</h2>
+      <p class="muted">Enter your details and resume below. Applications are stored instantly in browser storage.</p>
+    </div>
+    <span class="pill" style="color:var(--accent2);border-color:rgba(103,232,210,.3)">IndexedDB Storage</span>
+  </div>
+  <form id="applicationForm">
+    <div class="formgrid">
+      <div class="field"><label for="name">Full name *</label><input id="name" name="name" autocomplete="name" required placeholder="Your full name"></div>
+      <div class="field"><label for="email">Email address *</label><input id="email" name="email" type="email" autocomplete="email" required placeholder="you@example.com"></div>
+      <div class="field"><label for="phone">Phone number *</label><input id="phone" name="phone" type="tel" pattern="[0-9+() .-]{8,20}" required placeholder="+91 98765 43210"></div>
+      <div class="field"><label for="location">Current location *</label><input id="location" name="location" required placeholder="City, Country"></div>
+      <div class="field"><label for="education">Highest education *</label><select id="education" name="education" required><option value="">Select education</option><option>B.Tech / B.E.</option><option>B.Sc.</option><option>M.Tech / M.E.</option><option>M.Sc.</option><option>MCA</option><option>Other</option></select></div>
+      <div class="field"><label for="gradyear">Graduation year</label><input id="gradyear" name="gradyear" type="number" min="1980" max="2035" placeholder="2025"></div>
+      <div class="field"><label for="experience">Experience *</label><select id="experience" name="experience" required><option value="">Select experience</option><option>Fresher</option><option>Less than 1 year</option><option>1–3 years</option><option>3+ years</option></select></div>
+      <div class="field"><label for="linkedin">LinkedIn URL</label><input id="linkedin" name="linkedin" type="url" placeholder="https://linkedin.com/in/yourname"></div>
+      <div class="field full"><label for="skills">Relevant skills *</label><textarea id="skills" name="skills" required placeholder="Python, SQL, scikit-learn, PyTorch, NLP..."></textarea></div>
+      <div class="field full"><label for="resume">Resume (PDF, DOC, DOCX) *</label><input id="resume" name="resume" type="file" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" required><div class="help">Maximum file size: 5 MB. Resume file and application details are securely stored locally in the browser.</div></div>
+      <div class="field full"><label for="cover">Cover letter (optional)</label><textarea id="cover" name="cover" placeholder="Tell us briefly why you're interested in this role."></textarea></div>
+      <div class="field full"><label class="check"><input id="consent" type="checkbox" required><span>I consent to saving my application details and resume in the applicant tracking system. *</span></label></div>
+    </div>
+    <button class="btn" id="submitBtn" type="submit" style="margin-top:20px">Submit application →</button>
+    <div id="status" class="status" role="status" aria-live="polite"></div>
+  </form>
+</section>
+</main>
+<footer class="wrap footer">
+  <span>Northstar AI Careers · 100% Client-Side ATS (Zero Backend Required).</span>
+  <a href="admin.html" style="color:var(--accent2);text-decoration:underline">Go to Applicants Dashboard →</a>
+</footer>
+
+<!-- Client-Side Storage Script -->
+<script src="storage.js"></script>
+<script>
+const form = document.getElementById('applicationForm');
+const statusBox = document.getElementById('status');
+const submitBtn = document.getElementById('submitBtn');
+
+// Update applicant badge in header
+async function updateNavBadge() {
+  try {
+    const list = await getAllApplicants();
+    const count = list.length;
+    const badge = document.getElementById('navApplicantCount');
+    if (count > 0) {
+      badge.textContent = count;
+      badge.style.display = 'inline-block';
+    } else {
+      badge.style.display = 'none';
+    }
+  } catch (e) {
+    console.warn(e);
+  }
+}
+
+updateNavBadge();
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  statusBox.className = 'status';
+  statusBox.textContent = '';
+
+  if (!form.reportValidity()) return;
+
+  const fileInput = document.getElementById('resume');
+  const file = fileInput.files[0];
+  if (!file) {
+    statusBox.className = 'status err';
+    statusBox.textContent = 'Please attach a resume.';
+    return;
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    statusBox.className = 'status err';
+    statusBox.textContent = 'The resume file must be 5 MB or smaller.';
+    return;
+  }
+  const ext = file.name.split('.').pop().toLowerCase();
+  if (!['pdf', 'doc', 'docx'].includes(ext)) {
+    statusBox.className = 'status err';
+    statusBox.textContent = 'Upload a valid PDF, DOC, or DOCX file.';
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Storing application...';
+
+  try {
+    // Convert resume to base64 Data URL for client-side storage
+    const resumeDataUrl = await fileToDataUrl(file);
+
+    const applicantData = {
+      name: document.getElementById('name').value,
+      email: document.getElementById('email').value,
+      phone: document.getElementById('phone').value,
+      location: document.getElementById('location').value,
+      education: document.getElementById('education').value,
+      gradyear: document.getElementById('gradyear').value,
+      experience: document.getElementById('experience').value,
+      linkedin: document.getElementById('linkedin').value,
+      skills: document.getElementById('skills').value,
+      cover: document.getElementById('cover').value,
+      resume_name: file.name,
+      resume_type: file.type,
+      resume_size: file.size,
+      resume_data: resumeDataUrl
+    };
+
+    const savedRecord = await saveApplicant(applicantData);
+
+    statusBox.className = 'status ok';
+    statusBox.innerHTML = `
+      <strong>Application Submitted & Stored Successfully!</strong><br>
+      Application Reference: <strong style="color:#67e8d2">${savedRecord.reference_id}</strong><br>
+      Your candidate details and resume have been stored in the client-side database.<br>
+      <div style="margin-top: 14px; display:flex; gap:10px; flex-wrap:wrap;">
+        <a href="admin.html" class="btn" style="padding:8px 16px; font-size:13px; text-decoration:none;">
+          👥 View in Applicants Dashboard →
+        </a>
+      </div>
+    `;
+
+    form.reset();
+    updateNavBadge();
+  } catch (err) {
+    console.error(err);
+    statusBox.className = 'status err';
+    statusBox.textContent = 'Failed to store application: ' + err.message;
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Submit application →';
+    statusBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+</script>
+</body>
+</html>
