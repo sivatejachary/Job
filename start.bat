@@ -1,4 +1,5 @@
 @echo off
-echo Opening Northstar AI Job Careers & ATS...
-start "" "%~dp0index.html"
-exit
+echo Starting Northstar AI Next.js Application...
+start http://localhost:3000
+npm run dev
+pause

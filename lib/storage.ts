@@ -1,23 +1,42 @@
 /**
- * Northstar AI — Client-Side Storage Engine (IndexedDB + localStorage fallback)
- * 100% Frontend. Zero server, Zero Python, Zero Node.js required.
+ * Client-Side Storage Engine for Next.js (IndexedDB + localStorage fallback)
+ * 100% Client-side. Zero server, zero external database required.
  */
+
+export interface Applicant {
+  id?: number;
+  reference_id: string;
+  name: string;
+  email: string;
+  phone: string;
+  location: string;
+  education: string;
+  gradyear?: string;
+  experience: string;
+  linkedin?: string;
+  skills: string;
+  cover?: string;
+  resume_name: string;
+  resume_type: string;
+  resume_size: number;
+  resume_data: string; // Base64 data URL
+  applied_at: string;
+}
 
 const DB_NAME = 'NorthstarJobATS';
 const DB_VERSION = 1;
 const STORE_NAME = 'applicants';
 
-function getDB() {
-  return new Promise((resolve, reject) => {
-    if (!window.indexedDB) {
-      console.warn('IndexedDB not supported, falling back to localStorage');
+function getDB(): Promise<IDBDatabase | null> {
+  return new Promise((resolve) => {
+    if (typeof window === 'undefined' || !window.indexedDB) {
       resolve(null);
       return;
     }
     const request = indexedDB.open(DB_NAME, DB_VERSION);
 
     request.onupgradeneeded = (event) => {
-      const db = event.target.result;
+      const db = (event.target as IDBOpenDBRequest).result;
       if (!db.objectStoreNames.contains(STORE_NAME)) {
         const store = db.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
         store.createIndex('reference_id', 'reference_id', { unique: true });
@@ -27,25 +46,20 @@ function getDB() {
     };
 
     request.onsuccess = () => resolve(request.result);
-    request.onerror = () => {
-      console.warn('IndexedDB open error, falling back to localStorage:', request.error);
-      resolve(null);
-    };
+    request.onerror = () => resolve(null);
   });
 }
 
-// Convert file to base64 Data URL
-function fileToDataUrl(file) {
+export function fileToDataUrl(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
+    reader.onload = () => resolve(reader.result as string);
     reader.onerror = () => reject(reader.error);
     reader.readAsDataURL(file);
   });
 }
 
-// Generate unique reference ID (e.g. APP-A4F9D1)
-function generateReferenceId() {
+export function generateReferenceId(): string {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let ref = 'APP-';
   for (let i = 0; i < 6; i++) {
@@ -54,8 +68,7 @@ function generateReferenceId() {
   return ref;
 }
 
-// Format current date and time
-function getCurrentDateTime() {
+export function getCurrentDateTime(): string {
   const now = new Date();
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -66,25 +79,11 @@ function getCurrentDateTime() {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
-// Save applicant record
-async function saveApplicant(data) {
-  const applicantRecord = {
+export async function saveApplicant(data: Omit<Applicant, 'reference_id' | 'applied_at'>): Promise<Applicant> {
+  const applicantRecord: Applicant = {
+    ...data,
     reference_id: generateReferenceId(),
-    name: data.name.trim(),
-    email: data.email.trim(),
-    phone: data.phone.trim(),
-    location: data.location.trim(),
-    education: data.education.trim(),
-    gradyear: (data.gradyear || '').trim(),
-    experience: data.experience.trim(),
-    linkedin: (data.linkedin || '').trim(),
-    skills: data.skills.trim(),
-    cover: (data.cover || '').trim(),
-    resume_name: data.resume_name || 'resume.pdf',
-    resume_type: data.resume_type || 'application/pdf',
-    resume_size: data.resume_size || 0,
-    resume_data: data.resume_data || '', // Base64 Data URL
-    applied_at: getCurrentDateTime()
+    applied_at: getCurrentDateTime(),
   };
 
   const db = await getDB();
@@ -94,39 +93,36 @@ async function saveApplicant(data) {
       const store = transaction.objectStore(STORE_NAME);
       const req = store.add(applicantRecord);
       req.onsuccess = (e) => {
-        applicantRecord.id = e.target.result;
-        syncToLocalStorageSummary(applicantRecord);
+        applicantRecord.id = (e.target as IDBRequest).result as number;
+        syncToSummary(applicantRecord);
         resolve(applicantRecord);
       };
       req.onerror = () => reject(req.error);
     });
   } else {
-    // localStorage Fallback
     const list = getLocalStorageApplicants();
     applicantRecord.id = Date.now();
     list.unshift(applicantRecord);
     localStorage.setItem('ats_applicants_full', JSON.stringify(list));
-    syncToLocalStorageSummary(applicantRecord);
+    syncToSummary(applicantRecord);
     return applicantRecord;
   }
 }
 
-// Quick sync of summary to localStorage (without heavy resume base64) for instant counters
-function syncToLocalStorageSummary(record) {
+function syncToSummary(record: Applicant) {
   try {
     const raw = localStorage.getItem('ats_applicants_summary');
     const summaryList = raw ? JSON.parse(raw) : [];
     const item = { ...record };
-    delete item.resume_data;
+    delete (item as Partial<Applicant>).resume_data;
     summaryList.unshift(item);
     localStorage.setItem('ats_applicants_summary', JSON.stringify(summaryList.slice(0, 100)));
   } catch (e) {
-    console.warn('Could not sync to localStorage summary', e);
+    console.warn(e);
   }
 }
 
-// Get all applicants
-async function getAllApplicants() {
+export async function getAllApplicants(): Promise<Applicant[]> {
   const db = await getDB();
   if (db) {
     return new Promise((resolve, reject) => {
@@ -134,8 +130,7 @@ async function getAllApplicants() {
       const store = transaction.objectStore(STORE_NAME);
       const req = store.getAll();
       req.onsuccess = () => {
-        const list = req.result || [];
-        // Sort newest first
+        const list = (req.result || []) as Applicant[];
         list.sort((a, b) => (b.id || 0) - (a.id || 0));
         resolve(list);
       };
@@ -146,41 +141,25 @@ async function getAllApplicants() {
   }
 }
 
-// Delete applicant by ID
-async function deleteApplicant(id) {
+export async function deleteApplicant(id: number): Promise<boolean> {
   const db = await getDB();
   if (db) {
     return new Promise((resolve, reject) => {
       const transaction = db.transaction([STORE_NAME], 'readwrite');
       const store = transaction.objectStore(STORE_NAME);
-      const req = store.delete(Number(id));
-      req.onsuccess = () => {
-        removeFromLocalStorageSummary(id);
-        resolve(true);
-      };
+      const req = store.delete(id);
+      req.onsuccess = () => resolve(true);
       req.onerror = () => reject(req.error);
     });
   } else {
     let list = getLocalStorageApplicants();
-    list = list.filter(a => a.id !== id);
+    list = list.filter((a) => a.id !== id);
     localStorage.setItem('ats_applicants_full', JSON.stringify(list));
-    removeFromLocalStorageSummary(id);
     return true;
   }
 }
 
-function removeFromLocalStorageSummary(id) {
-  try {
-    const raw = localStorage.getItem('ats_applicants_summary');
-    if (!raw) return;
-    let list = JSON.parse(raw);
-    list = list.filter(a => a.id !== id);
-    localStorage.setItem('ats_applicants_summary', JSON.stringify(list));
-  } catch (e) {}
-}
-
-// Clear all applicants
-async function clearAllApplicants() {
+export async function clearAllApplicants(): Promise<boolean> {
   const db = await getDB();
   if (db) {
     return new Promise((resolve, reject) => {
@@ -200,19 +179,17 @@ async function clearAllApplicants() {
   }
 }
 
-// Fallback helper
-function getLocalStorageApplicants() {
+function getLocalStorageApplicants(): Applicant[] {
   try {
     const raw = localStorage.getItem('ats_applicants_full');
     return raw ? JSON.parse(raw) : [];
-  } catch (e) {
+  } catch {
     return [];
   }
 }
 
-// Load pre-populated sample candidates for testing
-async function seedSampleApplicants() {
-  const sample = [
+export async function seedSampleApplicants(): Promise<void> {
+  const sample: Omit<Applicant, 'reference_id' | 'applied_at'>[] = [
     {
       name: 'Aarav Sharma',
       email: 'aarav.sharma@example.com',
@@ -227,7 +204,7 @@ async function seedSampleApplicants() {
       resume_name: 'Aarav_Sharma_Resume.pdf',
       resume_type: 'application/pdf',
       resume_size: 145000,
-      resume_data: 'data:application/pdf;base64,JVBERi0xLjQKJcTl8uXrp/Og0MTGCjQgMCBvYmoKPDwgL0xlbmd0aCA1OSAvRmlsdGVyIC9GbGF0ZURlY29kZSA+PgpzdHJlYW0KeJwrSi0uUdBQUFCwsDAwsFCwVYjV5eICACgWBPUKZW5kc3RyZWFtCmVuZG9iag=='
+      resume_data: 'data:application/pdf;base64,JVBERi0xLjQKJcTl8uXrp/Og0MTGCjQgMCBvYmoKPDwgL0xlbmd0aCA1OSAvRmlsdGVyIC9GbGF0ZURlY29kZSA+PgpzdHJlYW0KeJwrSi0uUdBQUFCwsDAwsFCwVYjV5eICACgWBPUKZW5kc3RyZWFtCmVuZG9iag==',
     },
     {
       name: 'Pooja Reddy',
@@ -243,7 +220,7 @@ async function seedSampleApplicants() {
       resume_name: 'Pooja_Reddy_Resume.pdf',
       resume_type: 'application/pdf',
       resume_size: 210000,
-      resume_data: 'data:application/pdf;base64,JVBERi0xLjQKJcTl8uXrp/Og0MTGCjQgMCBvYmoKPDwgL0xlbmd0aCA1OSAvRmlsdGVyIC9GbGF0ZURlY29kZSA+PgpzdHJlYW0KeJwrSi0uUdBQUFCwsDAwsFCwVYjV5eICACgWBPUKZW5kc3RyZWFtCmVuZG9iag=='
+      resume_data: 'data:application/pdf;base64,JVBERi0xLjQKJcTl8uXrp/Og0MTGCjQgMCBvYmoKPDwgL0xlbmd0aCA1OSAvRmlsdGVyIC9GbGF0ZURlY29kZSA+PgpzdHJlYW0KeJwrSi0uUdBQUFCwsDAwsFCwVYjV5eICACgWBPUKZW5kc3RyZWFtCmVuZG9iag==',
     },
     {
       name: 'Rohan Verma',
@@ -259,8 +236,8 @@ async function seedSampleApplicants() {
       resume_name: 'Rohan_Verma_Resume.pdf',
       resume_type: 'application/pdf',
       resume_size: 98000,
-      resume_data: 'data:application/pdf;base64,JVBERi0xLjQKJcTl8uXrp/Og0MTGCjQgMCBvYmoKPDwgL0xlbmd0aCA1OSAvRmlsdGVyIC9GbGF0ZURlY29kZSA+PgpzdHJlYW0KeJwrSi0uUdBQUFCwsDAwsFCwVYjV5eICACgWBPUKZW5kc3RyZWFtCmVuZG9iag=='
-    }
+      resume_data: 'data:application/pdf;base64,JVBERi0xLjQKJcTl8uXrp/Og0MTGCjQgMCBvYmoKPDwgL0xlbmd0aCA1OSAvRmlsdGVyIC9GbGF0ZURlY29kZSA+PgpzdHJlYW0KeJwrSi0uUdBQUFCwsDAwsFCwVYjV5eICACgWBPUKZW5kc3RyZWFtCmVuZG9iag==',
+    },
   ];
 
   for (const item of sample) {

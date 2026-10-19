@@ -1,43 +1,73 @@
 # Job
 
-**AI/ML Engineer Job Portal & Client-Side Applicant Tracking System (ATS)**
+**AI/ML Engineer Job Portal & Applicant Tracking System (ATS) — Built with Next.js 14, React, and TypeScript**
 
-A 100% frontend, zero-backend static web application. No Python, Node.js, server, or database installation required. Everything runs entirely within the web browser using modern Web APIs (`IndexedDB` and `localStorage`).
+A modern Next.js web application with Tailwind CSS and persistent client-side storage (`IndexedDB`).
 
 ---
 
-## Highlights
-- **Zero Backend / Serverless**: Open directly in any browser (`index.html`) or deploy with 1-click to **GitHub Pages**, Netlify, or Vercel.
-- **Client-Side Applicant Storage**: Candidate submissions are stored locally in the browser's persistent `IndexedDB` database.
-- **Resume File Handling**: Resumes (`.pdf`, `.doc`, `.docx`) are converted to browser data blobs, stored offline, and can be downloaded anytime.
-- **Full Applicant Dashboard (`admin.html`)**:
-  - Real-time search across candidate names, skills, email, location, and reference IDs.
-  - Filter by experience level (Fresher, 1–3 years, 3+ years).
+## Tech Stack
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Icons**: Lucide React
+- **Storage**: Client-Side `IndexedDB` (with localStorage fallback)
+- **Deployment**: Vercel, GitHub Pages, or Netlify
+
+---
+
+## Features
+- **Job Post & Candidate Application Form (`/`)**:
+  - Full AI/ML Engineer JD, responsibilities, and requirements.
+  - Resume upload (`.pdf`, `.doc`, `.docx`) converted and stored offline in the browser.
+  - Client-side validation with real-time feedback and reference code generation (`APP-XXXXXX`).
+  - Dynamic applicant count badge in the navigation bar.
+- **Applicant Tracking Dashboard (`/admin`)**:
+  - Live metric counters (Total, Freshers, Experienced).
+  - Real-time search across candidate names, email, phone, location, skills, and reference IDs.
+  - Filter by experience level.
   - One-click native resume download.
-  - Candidate details modal with full cover letter and profile info.
-  - Export all applicants to **CSV** (for Excel / Google Sheets) or **JSON**.
-  - One-click sample test data loader and record management (delete / clear all).
+  - Candidate profile modal with full details and cover letters.
+  - **Export CSV** (for Excel / Google Sheets) & **Export JSON**.
+  - Demo data generator (`Load Demo Data`) and delete / clear actions.
 
 ---
 
-## How to Run
+## Quick Start
 
-### Option 1: Direct File Open
-Simply double-click [`index.html`](index.html) or run [`start.bat`](start.bat) to launch the website in your default browser.
+### 1. Install Dependencies
+```bash
+npm install
+```
 
-### Option 2: GitHub Pages (Live Hosting)
-1. In your GitHub repository settings, go to **Pages**.
-2. Select `main` branch and `/ (root)` folder.
-3. Click **Save**. Your site will be live instantly on `https://<username>.github.io/<repo>/`!
+### 2. Run the Development Server
+```bash
+npm run dev
+```
+Or double-click `start.bat` on Windows.
+
+### 3. Open in Browser
+- **Job Application Page**: [http://localhost:3000](http://localhost:3000)
+- **Applicant Dashboard (ATS)**: [http://localhost:3000/admin](http://localhost:3000/admin)
 
 ---
 
-## File Structure
+## Project Structure
 ```text
-├── index.html        # Job posting and application form
-├── admin.html        # ATS Applicant tracking dashboard
-├── storage.js        # Client-side IndexedDB storage engine
-├── start.bat         # Windows shortcut to open website
-├── README.md         # Documentation
-└── .gitignore        # Git ignore rules
+├── app/
+│   ├── layout.tsx         # Root layout with Navbar and Footer
+│   ├── page.tsx           # Job posting and application form
+│   ├── globals.css        # Tailwind & glassmorphism theme
+│   └── admin/
+│       └── page.tsx       # ATS Applicant Tracking Dashboard
+├── components/
+│   └── Navbar.tsx         # Navigation with dynamic applicant counter
+├── lib/
+│   └── storage.ts         # Client-side IndexedDB storage utility
+├── public/                # Static assets
+├── tailwind.config.ts     # Tailwind theme configuration
+├── next.config.mjs        # Next.js configuration
+├── tsconfig.json          # TypeScript configuration
+├── package.json           # Project dependencies & scripts
+└── start.bat              # Windows startup shortcut
 ```
